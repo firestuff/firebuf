@@ -12,4 +12,4 @@ firebuf.a: $(objects)
 	$(FIRE_CXX) $(FIRE_CXXFLAGS) -c -o $@ $<
 
 clean:
-	rm --force firebuf.a *.o
+	rm --force *.o *.a
