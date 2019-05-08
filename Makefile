@@ -9,7 +9,7 @@ firebuf.a: $(objects)
 	ar rcs $@ $^
 
 firebuf.o: $(objects)
-	ld --relocatable --output=$@ $^
+	ld --relocatable --output=$@ $+
 
 %.o: %.cc *.h Makefile
 	$(FIRE_CXX) $(FIRE_CXXFLAGS) -c -o $@ $<
