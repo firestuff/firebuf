@@ -18,6 +18,8 @@ class ConstBuffer {
 	void ResetRead(); // next read from last commit
 	void Commit(); // commit read position
 
+	virtual void Reset(); // full reset
+
   protected:
 	const char *const_buf_;
 	size_t len_;
@@ -33,9 +35,11 @@ class Buffer : public ConstBuffer {
 	[[nodiscard]] char *WritePtr();
 	[[nodiscard]] size_t WriteMaxLen() const;
 	bool Write(const std::string_view& str);
-	void Wrote(size_t len);
+	void Wrote(ssize_t len);
 
 	void Consume(); // discard up to last commit
+
+	void Reset() override; // full reset
 
   protected:
 	std::unique_ptr<char[]> own_buf_;

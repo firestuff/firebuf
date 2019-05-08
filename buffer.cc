@@ -35,6 +35,10 @@ void ConstBuffer::Commit() {
 	commit_ = start_;
 }
 
+void ConstBuffer::Reset() {
+	commit_ = start_ = 0;
+}
+
 
 Buffer::Buffer(char *buf, size_t size, size_t len)
 		: ConstBuffer(buf, size),
@@ -65,7 +69,7 @@ bool Buffer::Write(const std::string_view& str) {
 	return true;
 }
 
-void Buffer::Wrote(size_t len) {
+void Buffer::Wrote(ssize_t len) {
 	CHECK_LE(len, WriteMaxLen());
 	len_ += len;
 }
@@ -78,6 +82,11 @@ void Buffer::Consume() {
 	len_ -= commit_;
 	start_ -= commit_;
 	commit_ = 0;
+}
+
+void Buffer::Reset() {
+	ConstBuffer::Reset();
+	len_ = 0;
 }
 
 } // namespace firebuf

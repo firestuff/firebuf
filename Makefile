@@ -13,3 +13,7 @@ firebuf.a: $(objects)
 
 clean:
 	rm --force *.o *.a
+
+asan:
+	$(MAKE) clean
+	FIRE_CXXFLAGS="-O1 -g -fsanitize=address -fno-omit-frame-pointer -std=gnu++2a -Wall -Werror" $(MAKE) all
