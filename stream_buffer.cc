@@ -7,6 +7,10 @@ StreamBuffer::StreamBuffer(int sock, size_t size)
 		  sock_(sock) {}
 
 bool StreamBuffer::Refill() {
+	if (WriteMaxLen() == 0) {
+		LOG(ERROR) << "buffer full";
+		return false;
+	}
 	auto read_len = read(sock_, WritePtr(), WriteMaxLen());
 	if (read_len == -1) {
 		if (errno == EINTR) {
