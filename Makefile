@@ -1,7 +1,9 @@
 FIRE_CXX ?= clang++
-FIRE_CXXFLAGS ?= -O3 -std=gnu++2a -Wall -Werror
+FIRE_CXXFLAGS ?= -O3 -std=gnu++2a -Wall -Werror -Wextra -fPIE -fPIC -fstack-protector-strong -fsanitize=safe-stack -fsanitize=safe-stack
+FIRE_LDFLAGS ?= -fuse-ld=gold -flto -Wl,-z,relro -Wl,-z,now
+FIRE_LDLIBS ?= -lglog
 
-all: firebuf.a firebuf.o
+all: firebuf.a firebuf.o firebuf.so
 
 objects = stream_buffer.o buffer.o
 
@@ -9,13 +11,16 @@ firebuf.a: $(objects)
 	ar rcs $@ $^
 
 firebuf.o: $(objects)
-	ld --relocatable --output=$@ $+
+	gold -z relro -z now -r --output=$@ $+
+
+firebuf.so: $(objects)
+	$(FIRE_CXX) $(FIRE_CXXFLAGS) $(FIRE_LDFLAGS) -shared -o $@ $+ $(FIRE_LDFLIBS)
 
 %.o: %.cc *.h Makefile
 	$(FIRE_CXX) $(FIRE_CXXFLAGS) -c -o $@ $<
 
 clean:
-	rm --force *.o *.a
+	rm --force *.so *.o *.a
 
 asan:
 	$(MAKE) clean
