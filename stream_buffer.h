@@ -5,13 +5,13 @@
 namespace firebuf {
 
 class StreamBuffer : public Buffer {
-  public:
-	StreamBuffer(int sock, size_t size);
+ public:
+  StreamBuffer(int sock, size_t size);
 
-	[[nodiscard]] bool Refill();
+  [[nodiscard]] bool Refill();
 
-  private:
-  	int sock_;
+ private:
+  int sock_;
 };
 
-} // namespace firebuf
+}  // namespace firebuf
