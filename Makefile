@@ -14,7 +14,7 @@ firebuf.o: $(objects)
 	gold -z relro -z now -r --output=$@ $+
 
 firebuf.so: $(objects)
-	$(FIRE_CXX) $(FIRE_CXXFLAGS) $(FIRE_LDFLAGS) -shared -o $@ $+ $(FIRE_LDFLIBS)
+	$(FIRE_CXX) $(FIRE_CXXFLAGS) $(FIRE_LDFLAGS) -shared -o $@ $+ $(FIRE_LDLIBS)
 
 %.o: %.cc *.h Makefile
 	$(FIRE_CXX) $(FIRE_CXXFLAGS) -c -o $@ $<
